@@ -218,7 +218,8 @@ export default function Page() {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         disabled={gameState !== "playing"}
-        inputMode="numeric"
+        //readOnly
+        inputMode="none"
         className="sr-only"
         aria-label="Enter your guess"
         autoFocus
@@ -379,7 +380,7 @@ export default function Page() {
           )}
 
           {/* Mobile numpad */}
-          <div className="flex lg:hidden mt-2" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full flex lg:hidden mt-2" onClick={(e) => e.stopPropagation()}>
             <Numpad
               onDigit={(d) => setInput((p) => p.length < 8 ? p + d : p)}
               onDelete={() => setInput((p) => p.slice(0, -1))}

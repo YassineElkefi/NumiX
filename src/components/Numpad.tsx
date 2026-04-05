@@ -17,36 +17,69 @@ const ROWS = [
 
 export default function Numpad({ onDigit, onDelete, onSubmit, inputLength, disabled }: NumpadProps) {
   const handleKey = (key: string) => {
+    if (disabled && key !== "del") return;
     if (key === "del") onDelete();
     else if (key === "enter") onSubmit();
     else onDigit(key);
   };
 
   return (
-    <div className="grid grid-rows-4 gap-2 w-full max-w-[280px]">
+    <div className="w-full grid gap-2.5 px-1" style={{ gridTemplateRows: "repeat(4, 1fr)" }}>
       {ROWS.map((row, ri) => (
-        <div key={ri} className="grid grid-cols-3 gap-2">
+        <div key={ri} className="grid grid-cols-3 gap-2.5">
           {row.map((key) => {
             const isEnter = key === "enter";
             const isDel = key === "del";
             const enterReady = isEnter && inputLength === 8 && !disabled;
+            const isDisabled = disabled && !isDel;
 
             return (
               <button
                 key={key}
-                onPointerDown={(e) => { e.preventDefault(); handleKey(key); }}
-                disabled={disabled && !isDel}
-                className="h-14 rounded-xl text-sm font-bold border-2 transition-all duration-100 active:scale-95 select-none touch-none"
+                onPointerDown={(e) => {
+                  e.preventDefault();
+                  if (!isDisabled) handleKey(key);
+                }}
+                aria-label={key === "del" ? "Delete" : key === "enter" ? "Submit" : key}
+                className={`
+                  relative h-16 rounded-2xl text-lg font-extrabold
+                  border-2 select-none touch-none
+                  transition-all duration-100 active:scale-95 active:brightness-90
+                  ${isDisabled ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
+                `}
                 style={
                   isEnter
                     ? enterReady
-                      ? { background: "#4f46e5", borderColor: "#818cf8", color: "#fff" }
-                      : { backgroundColor: "var(--bg-stat)", borderColor: "var(--border)", color: "var(--text-muted)", cursor: "not-allowed" }
+                      ? {
+                          background: "linear-gradient(135deg, #4f46e5, #7c3aed)",
+                          borderColor: "#818cf8",
+                          color: "#fff",
+                          boxShadow: "0 4px 16px rgba(99,102,241,0.45)",
+                        }
+                      : {
+                          backgroundColor: "var(--bg-stat)",
+                          borderColor: "var(--border)",
+                          color: "var(--text-muted)",
+                        }
                     : isDel
-                    ? { backgroundColor: "var(--bg-stat)", borderColor: "var(--border)", color: "#f87171" }
-                    : { backgroundColor: "var(--bg-stat)", borderColor: "var(--border)", color: "var(--text-primary)" }
+                    ? {
+                        backgroundColor: "var(--bg-stat)",
+                        borderColor: "var(--border)",
+                        color: "#f87171",
+                        fontSize: "22px",
+                      }
+                    : {
+                        backgroundColor: "var(--bg-stat)",
+                        borderColor: "var(--border)",
+                        color: "var(--text-primary)",
+                      }
                 }
               >
+                {/* Inner highlight for depth */}
+                <span
+                  className="absolute inset-x-0 top-0 h-px rounded-t-2xl opacity-30"
+                  style={{ background: "linear-gradient(90deg, transparent, #fff, transparent)" }}
+                />
                 {key === "del" ? "⌫" : key === "enter" ? "↵" : key}
               </button>
             );
