@@ -15,17 +15,17 @@ html.dark {
   --text-primary:   #ffffff;
   --text-secondary: #a1a1aa;
   --text-muted:     #52525b;
-  --cell-empty:  #18181b;
-  --cell-border-empty: #3f3f46;
+  --cell-empty:     #18181b;
+  --cell-border-empty:  #3f3f46;
   --cell-border-filled: #71717a;
   --header-border: rgba(63, 63, 70, 0.6);
-  --orb1: rgba(67, 56, 202, 0.18);
-  --orb2: rgba(109, 40, 217, 0.12);
+  --orb1: rgba(67, 56, 202, 0.22);
+  --orb2: rgba(109, 40, 217, 0.14);
 }
 
 /* ── Light theme ── */
 html.light {
-  --bg:          #f4f4f8;
+  --bg:          #fafaff;
   --bg-card:     rgba(255, 255, 255, 0.85);
   --bg-cell:     #ffffff;
   --bg-cell-filled: #e4e4e7;
@@ -35,12 +35,12 @@ html.light {
   --text-primary:   #09090b;
   --text-secondary: #52525b;
   --text-muted:     #a1a1aa;
-  --cell-empty:  #f4f4f8;
-  --cell-border-empty: #d4d4d8;
+  --cell-empty:     #f4f4f8;
+  --cell-border-empty:  #d4d4d8;
   --cell-border-filled: #a1a1aa;
   --header-border: rgba(161, 161, 170, 0.35);
-  --orb1: rgba(99, 102, 241, 0.10);
-  --orb2: rgba(168, 85, 247, 0.08);
+  --orb1: rgba(139, 92, 246, 0.18);
+  --orb2: rgba(167, 139, 250, 0.12);
 }
 
 body {
