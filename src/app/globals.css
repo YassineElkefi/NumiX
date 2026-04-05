@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Dark theme (default) ── */
+:root,
+html.dark {
+  --bg:          #09090b;
+  --bg-card:     rgba(24, 24, 27, 0.7);
+  --bg-cell:     #18181b;
+  --bg-cell-filled: #27272a;
+  --bg-stat:     rgba(39, 39, 42, 0.6);
+  --border:      rgba(63, 63, 70, 0.8);
+  --border-card: rgba(63, 63, 70, 0.5);
+  --text-primary:   #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted:     #52525b;
+  --cell-empty:  #18181b;
+  --cell-border-empty: #3f3f46;
+  --cell-border-filled: #71717a;
+  --header-border: rgba(63, 63, 70, 0.6);
+  --orb1: rgba(67, 56, 202, 0.18);
+  --orb2: rgba(109, 40, 217, 0.12);
+}
+
+/* ── Light theme ── */
+html.light {
+  --bg:          #f4f4f8;
+  --bg-card:     rgba(255, 255, 255, 0.85);
+  --bg-cell:     #ffffff;
+  --bg-cell-filled: #e4e4e7;
+  --bg-stat:     rgba(228, 228, 231, 0.7);
+  --border:      rgba(161, 161, 170, 0.5);
+  --border-card: rgba(161, 161, 170, 0.4);
+  --text-primary:   #09090b;
+  --text-secondary: #52525b;
+  --text-muted:     #a1a1aa;
+  --cell-empty:  #f4f4f8;
+  --cell-border-empty: #d4d4d8;
+  --cell-border-filled: #a1a1aa;
+  --header-border: rgba(161, 161, 170, 0.35);
+  --orb1: rgba(99, 102, 241, 0.10);
+  --orb2: rgba(168, 85, 247, 0.08);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

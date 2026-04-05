@@ -83,7 +83,7 @@ src/
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/numix.git
+git clone https://github.com/YassineElkefi/NumiX.git
 cd numix
 npm install
 ```
