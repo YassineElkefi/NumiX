@@ -1,36 +1,183 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📞 NumiX
 
-## Getting Started
+**A Wordle-style game where you guess an 8-digit Tunisian phone number.**
 
-First, run the development server:
+Built with Next.js 15, TypeScript, and Tailwind CSS.
+
+---
+
+## 🎮 How to Play
+
+1. You have **8 attempts** to guess the secret Tunisian phone number.
+2. Type directly into the board — digits appear in the cells as you type.
+3. Press **Enter** (or tap ↵ on mobile) to submit your guess.
+4. After each guess, the cells reveal colour-coded feedback:
+
+| Colour | Meaning |
+|--------|---------|
+| 🟩 **Green** | Right digit, right position |
+| 🟨 **Yellow** | Right digit, wrong position |
+| ⬛ **Grey** | Digit not in the number at all |
+
+### Valid Tunisian Prefixes
+
+| Prefix | Operator |
+|--------|----------|
+| `2x` | Ooredoo |
+| `3x` | Ooredoo |
+| `5x` | Orange |
+| `71` / `72` | Tunisie Télécom |
+| `9x` | Tunisie Télecom |
+
+> Numbers starting with `7` must have `1` or `2` as the second digit (71… or 72…).
+
+---
+
+## ✨ Features
+
+- **In-cell typing** — digits appear directly inside the board cells, Wordle-style
+- **Blinking cursor** on the active cell
+- **Flip animations** when a row is revealed
+- **Shake animation** on invalid input
+- **Confetti burst** when you win 🎉
+- **Light / Dark mode** toggle — persisted to localStorage
+- **Stats tracking** — games played, wins, win rate, streak (persisted to localStorage)
+- **Live progress bar** showing how far through each guess you are
+- **Mobile numpad** — appears automatically on small screens
+- **Keyboard support** — type digits and press Enter on desktop
+- **Phone number grouping** — digits displayed as `XX XXX XXX` for readability
+- **Duplicate digit logic** — correct Wordle-style handling (e.g. only one yellow if the digit appears once in the secret)
+
+---
+
+## 🗂 Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx          # Root layout with ThemeProvider + Footer
+│   ├── page.tsx            # Main game page
+│   └── globals.css         # CSS variables for dark/light themes
+├── components/
+│   ├── Board.tsx           # Grid of 8 rows
+│   ├── Cell.tsx            # Individual digit cell with animations
+│   ├── Row.tsx             # One guess row, grouped as 2-3-3
+│   ├── Numpad.tsx          # Mobile number pad
+│   └── Footer.tsx          # "Made by Yassine with ♥"
+├── contexts/
+│   └── ThemeContext.tsx    # Light/dark theme state + toggle
+└── utils/
+    ├── generateNumber.ts   # Random valid Tunisian number generator
+    └── checkGuess.ts       # Guess evaluation with duplicate-aware logic
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm / yarn / pnpm
+
+### Installation
+
+```bash
+git clone https://github.com/your-username/numix.git
+cd numix
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧠 Game Logic
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Number Generation (`generateNumber.ts`)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Randomly selects a valid Tunisian prefix: `2`, `3`, `5`, `9`, or `7`
+- Numbers starting with `7` always have `1` or `2` as the second digit
+- The remaining digits are random (0–9)
 
-## Deploy on Vercel
+### Guess Checking (`checkGuess.ts`)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Uses a **two-pass algorithm** — the same approach used by the original Wordle:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Pass 1** — scan for exact matches (`correct`). Count remaining unmatched secret digits.
+2. **Pass 2** — scan remaining guessed digits. Mark as `present` (yellow) only if the secret still has an unaccounted copy of that digit.
+
+This ensures that if you type `55` and the secret contains only one `5`, only the first `5` gets yellow — the second is grey.
+
+---
+
+## 🎨 Theming
+
+All colours are driven by CSS custom properties defined in `globals.css`:
+
+```css
+/* Dark (default) */
+html.dark {
+  --bg: #09090b;
+  --bg-card: rgba(24, 24, 27, 0.7);
+  --text-primary: #ffffff;
+  /* ... */
+}
+
+/* Light */
+html.light {
+  --bg: #f4f4f8;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --text-primary: #09090b;
+  /* ... */
+}
+```
+
+The theme is toggled via `ThemeContext`, persisted in `localStorage`, and applied instantly on load via an inline `<script>` in `layout.tsx` to prevent flash-of-wrong-theme.
+
+---
+
+## 🛠 Tech Stack
+
+| Tool | Purpose |
+|------|---------|
+| [Next.js 15](https://nextjs.org/) | React framework with App Router |
+| [TypeScript](https://www.typescriptlang.org/) | Type safety |
+| [Tailwind CSS v3](https://tailwindcss.com/) | Utility-first styling |
+| CSS Custom Properties | Theme switching (dark/light) |
+| Canvas API | Confetti animation |
+| localStorage | Stats + theme persistence |
+
+---
+
+## 📱 Responsive Design
+
+| Breakpoint | Layout |
+|------------|--------|
+| Mobile (`< lg`) | Board centered, numpad shown below, legend above |
+| Desktop (`lg+`) | 3-column: How to Play · Board · Stats |
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first.
+
+---
+
+## 👨‍💻 Author
+
+Made with ♥ by **Yassine**
